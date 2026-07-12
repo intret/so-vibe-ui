@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe UI Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0F172A;
+      color: #F8FAFC;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 560px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: #1E293B;
+      color: #22C55E;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.2), 0 4px 16px rgba(34, 197, 94, 0.1);
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #F8FAFC;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    p {
+      color: #94A3B8;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .shortcut {
+      display: inline-block;
+      background: #1E293B;
+      color: #22C55E;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+    }
+    .button-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      background: #1E293B;
+      color: #E2E8F0;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    button:hover {
+      background: #334155;
+      border-color: #475569;
+      color: #F8FAFC;
+    }
+    button.primary {
+      background: #22C55E;
+      color: #0F172A;
+      border-color: #22C55E;
+      font-weight: 600;
+    }
+    button.primary:hover {
+      background: #4ADE80;
+      border-color: #4ADE80;
+    }
+    .status {
+      margin-top: 24px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      display: inline-block;
+    }
+    .status.disconnected {
+      background: rgba(239, 68, 68, 0.1);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    .status.connected {
+      background: rgba(34, 197, 94, 0.1);
+      color: #4ADE80;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">&gt;_</div>
+    <h1>Vibe UI</h1>
+    <p>
+      Press <span class="shortcut">Alt+V</span> to toggle the terminal panel,
+      or click the floating button in the corner.
+    </p>
+    <div class="button-row">
+      <button class="primary" onclick="vibe.open()">Open Terminal</button>
+      <button onclick="vibe.close()">Close Terminal</button>
+      <button onclick="vibe.toggle()">Toggle</button>
+    </div>
+    <div id="status" class="status disconnected">
+      ● Disconnected
+    </div>
+  </div>
+
+  <script type="module">
+    import { VibeUI } from './dist/sdk/index.js';
+
+    window.vibe = new VibeUI({
+      url: 'http://localhost:3000',
+      triggerButton: true,
+      triggerPosition: 'bottom-right',
+      onOpen: () => console.log('Terminal panel opened'),
+      onClose: () => console.log('Terminal panel closed'),
+      onReady: () => {
+        const el = document.getElementById('status');
+        el.className = 'status connected';
+        el.textContent = '● Connected';
+      },
+      onError: (err) => console.error('Vibe UI error:', err),
+    });
+  </script>
+</body>
+</html>
