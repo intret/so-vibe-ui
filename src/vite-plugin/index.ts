@@ -51,7 +51,7 @@ async function findPort(startPort: number, host: string): Promise<number> {
 export function vibeUIPlugin(options: VibeUIPluginOptions = {}): Plugin {
   const host = options.host ?? '127.0.0.1';
   const command = options.command ?? 'bash';
-  const cwd = options.cwd ?? process.cwd();
+  const cwd = options.cwd ? resolve(options.cwd) : process.cwd();
   const explicitPort = options.port;
 
   let serverProcess: ChildProcess | null = null;
