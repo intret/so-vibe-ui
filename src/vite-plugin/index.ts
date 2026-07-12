@@ -2,7 +2,13 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createServer, type AddressInfo } from 'node:net';
-import type { Plugin } from 'vite';
+
+/** Minimal Vite plugin interface — avoids bundling vite as a dependency */
+interface VitePlugin {
+  name: string;
+  configureServer?: (server: { httpServer?: { once: (event: string, cb: () => void) => void } | null }) => void | Promise<void>;
+  closeBundle?: () => void;
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -48,7 +54,7 @@ async function findPort(startPort: number, host: string): Promise<number> {
  * });
  * ```
  */
-export function vibeUIPlugin(options: VibeUIPluginOptions = {}): Plugin {
+export function vibeUIPlugin(options: VibeUIPluginOptions = {}): VitePlugin {
   const host = options.host ?? '127.0.0.1';
   const command = options.command ?? 'bash';
   const cwd = options.cwd ? resolve(options.cwd) : process.cwd();

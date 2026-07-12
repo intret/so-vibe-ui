@@ -41,7 +41,7 @@ try {
 
   // 4. Build Vite Plugin
   run(
-    'npx tsup src/vite-plugin/index.ts --format esm --dts --clean --target node18 --platform node --out-dir dist/vite-plugin --external vite',
+    'npx tsup src/vite-plugin/index.ts --format esm --dts --clean --target node18 --platform node --out-dir dist/vite-plugin ',
     'Building Vite Plugin',
   );
 
