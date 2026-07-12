@@ -79,7 +79,7 @@ export function vibeUIPlugin(options: VibeUIPluginOptions = {}): VitePlugin {
           }
         }
 
-        const cliPath = resolve(__dirname, '../../server/cli.js');
+        const cliPath = resolve(__dirname, '../server/cli.js');
 
         const args = [
           cliPath,
